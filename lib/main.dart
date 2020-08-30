@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:charcode/html_entity.dart';
 
 void main() {
   runApp(MyApp());
+
+ Firestore.instance.collection('aluno').add({'Thiago' : 'Nota 9,0'});
 }
 
 class MyApp extends StatelessWidget {
