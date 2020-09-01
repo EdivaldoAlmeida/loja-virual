@@ -1,12 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:charcode/html_entity.dart';
+import 'package:loja_virtual/screens/base/base_screen.dart';
 
-void main() {
+void main() async{
   runApp(MyApp());
 
- Firestore.instance.collection('aluno').add({'Thiago' : 'Nota 9,0'});
-}
+  Firestore.instance.collection('aluno').snapshots().listen((snapshot) {
+
+    for(DocumentSnapshot documento in snapshot.documents){
+      print(documento.data);
+    }
+
+  });
+ }
 
 class MyApp extends StatelessWidget {
   @override
@@ -18,16 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
-      home: Container(
-        child: Column(
-          children: [
-            AppBar(
-              title: Text("Loja virtual Edivaldo"),
-            ),
-
-          ],
-        ),
-      )
+      home: BaseScreen()
     );
   }
 }
