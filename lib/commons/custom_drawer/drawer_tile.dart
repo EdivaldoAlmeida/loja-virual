@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:loja_virtual/models/page_manager.dart';
+import 'package:provider/provider.dart';
+
+/*
+Classe que constroi um item do Drawer. Ela recebe um ícone, um texto e um
+um int para identificar o número da página.
+ */
 
 class DrawerTile extends StatelessWidget {
 
@@ -10,9 +17,13 @@ class DrawerTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //Obtendo a página atual através do PageManager.
+    final int curPage = context.watch<PageManager>().page;
+
         return InkWell(
           onTap: (){
-            debugPrint('Clicou na página $page');
+            //Ler o método setPage do PageManager, enviando o número da página
+            context.read<PageManager>().setPage(page);
           },
           child: SizedBox(
             height: 60,
@@ -23,7 +34,7 @@ class DrawerTile extends StatelessWidget {
               child: Icon(
                   iconData,
                 size: 32,
-                color: Colors.grey[700],
+                color: curPage == page ? Colors.red : Colors.grey[700],
               ),
             ),
             Text(

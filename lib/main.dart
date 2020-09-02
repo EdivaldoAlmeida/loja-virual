@@ -6,13 +6,6 @@ import 'package:loja_virtual/screens/base/base_screen.dart';
 void main() async{
   runApp(MyApp());
 
-  Firestore.instance.collection('aluno').snapshots().listen((snapshot) {
-
-    for(DocumentSnapshot documento in snapshot.documents){
-      print(documento.data);
-    }
-
-  });
  }
 
 class MyApp extends StatelessWidget {
