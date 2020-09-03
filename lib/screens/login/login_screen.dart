@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:loja_virtual/helpers/validators.dart';
+import 'package:loja_virtual/models/user.dart';
+import 'package:loja_virtual/models/user_manager.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
 
@@ -37,7 +40,6 @@ class LoginScreen extends StatelessWidget {
                     if(!emailValid(email)) {
                       return "E-mail Inválido";
                     }
-                    print(emailController.text);
                     return null;
                   },
                 ),
@@ -71,7 +73,11 @@ class LoginScreen extends StatelessWidget {
                   height: 44,
                   child: RaisedButton(
                     onPressed: (){
-                      formKey.currentState.validate(); // 4 - validando os campos
+                      if(formKey.currentState.validate()){ // 4 - validando os campos
+                        context.read<UserMaganager>().signIn(
+                          User(emailController.text, passController.text)
+                        );
+                      }
                     },
                     color: Theme.of(context).primaryColor,
                     textColor: Colors.white,
