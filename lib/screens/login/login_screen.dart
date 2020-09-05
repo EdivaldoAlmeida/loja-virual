@@ -12,12 +12,16 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
 
-  // 2 - Chave global para validação dos campos validados (e-amil e senha)
+  // 2 - Chave global do formulário para validação dos campos validados (e-amil e senha)
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  // Chave global do Scaffold: exibi SnackBar ao detectar falha ao autenticar.
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
         title: const Text('Entrar'),
         centerTitle: true,
@@ -75,7 +79,18 @@ class LoginScreen extends StatelessWidget {
                     onPressed: (){
                       if(formKey.currentState.validate()){ // 4 - validando os campos
                         context.read<UserMaganager>().signIn(
-                          User(emailController.text, passController.text)
+                          user: User(emailController.text, passController.text),
+                          onFail: (e){
+                            scaffoldKey.currentState.showSnackBar(
+                             SnackBar(
+                               content:  Text('Falha ao entra:  $e'),
+                               backgroundColor: Colors.red,
+                             )
+                            );
+                          },
+                          onSuccess: (){
+                            //TODO: FECHAR TELA DE LOGIN
+                          }
                         );
                       }
                     },
