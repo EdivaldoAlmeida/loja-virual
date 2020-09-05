@@ -12,11 +12,12 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
+        // ignore: prefer_const_literals_to_create_immutables
         children: <Widget>[
-          DrawerTile(Icons.home, 'Início', 0,),
-          DrawerTile(Icons.list, 'Produtos', 1,),
-          DrawerTile(Icons.playlist_add_check, 'Meus pedidos', 2,),
-          DrawerTile(Icons.location_on, 'Lojas', 3)
+          const DrawerTile(Icons.home, 'Início', 0,),
+          const DrawerTile(Icons.list, 'Produtos', 1,),
+          const DrawerTile(Icons.playlist_add_check, 'Meus pedidos', 2,),
+          const DrawerTile(Icons.location_on, 'Lojas', 3)
 
         ],
       ),

@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:charcode/html_entity.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:loja_virtual/screens/base/base_screen.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +11,7 @@ void main() async{
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider( //Possibilita o acesso à UserManeger de qualquer lugar
+    return ChangeNotifierProvider( //Possibilita o acesso à UserManeger de qualquer lugar
     create: (_) => UserMaganager(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -31,80 +31,91 @@ class LoginScreen extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 16),
           child: Form( // 1 - Esse Widget é necessário para permmitir o acesso aos campos do formulário
             key: formKey, // 3 - Chave para acessar os formulários
-            child: ListView(
-              padding: const EdgeInsets.all(16),
-              shrinkWrap: true, //Lista irá ocupar a menor altura possível
-              children: <Widget>[
-                TextFormField(
-                  controller: emailController,
-                  decoration: const InputDecoration(hintText: 'E-mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  validator: (email){
-                    if(!emailValid(email)) {
-                      return "E-mail Inválido";
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16,),
-                TextFormField(
-                  controller: passController,
-                  decoration: const InputDecoration(hintText: 'Senha'),
-                  autocorrect: false,
-                  obscureText: true,
-                  validator: (pass){
-                    if(pass.isEmpty || pass.length <6) {
-                      return 'Senha inválida';
-                    }
-                    return null;
-                  },
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: FlatButton(
-                    onPressed: (){
-
-                    },
-                    padding: EdgeInsets.zero,
-                    child: const Text(
-                      'Esqueci minha senha'
+            child: Consumer<UserMaganager>( //widget consumidor é aquele que fica observando as mudanças no UserManager e rebuilda todos os filhos em caso de mudança daquele
+              builder: (_, userManager, __){ //parâmetros com _ quer dizer que não iremos utilizá-los.
+                return ListView(
+                  padding: const EdgeInsets.all(16),
+                  shrinkWrap: true, //Lista irá ocupar a menor altura possível
+                  children: <Widget>[
+                    TextFormField(
+                      controller: emailController,
+                      enabled: !userManager.loading, //desabilita caso o esteja carregando
+                      decoration: const InputDecoration(hintText: 'E-mail'),
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      validator: (email){
+                        if(!emailValid(email)) {
+                          return "E-mail Inválido";
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                ),
-                const SizedBox(height: 16,),
-                SizedBox(
-                  height: 44,
-                  child: RaisedButton(
-                    onPressed: (){
-                      if(formKey.currentState.validate()){ // 4 - validando os campos
-                        context.read<UserMaganager>().signIn(
-                          user: User(emailController.text, passController.text),
-                          onFail: (e){
-                            scaffoldKey.currentState.showSnackBar(
-                             SnackBar(
-                               content:  Text('Falha ao entra:  $e'),
-                               backgroundColor: Colors.red,
-                             )
-                            );
-                          },
-                          onSuccess: (){
-                            //TODO: FECHAR TELA DE LOGIN
-                          }
-                        );
-                      }
-                    },
-                    color: Theme.of(context).primaryColor,
-                    textColor: Colors.white,
-                    child: const Text(
-                      'Entrar',
-                      style: TextStyle(
-                        fontSize: 18
+                    const SizedBox(height: 16,),
+                    TextFormField(
+                      controller: passController,
+                      enabled: !userManager.loading, //desabilida caso esteja carregando
+                      decoration: const InputDecoration(hintText: 'Senha'),
+                      autocorrect: false,
+                      obscureText: true,
+                      validator: (pass){
+                        if(pass.isEmpty || pass.length <6) {
+                          return 'Senha inválida';
+                        }
+                        return null;
+                      },
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                        onPressed: (){
+
+                        },
+                        padding: EdgeInsets.zero,
+                        child: const Text(
+                            'Esqueci minha senha'
+                        ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                    const SizedBox(height: 16,),
+                    SizedBox(
+                      height: 44,
+                      child: RaisedButton(
+                        //caso esteja carregando o botão será desabilitado (null), caso cotrário mostra normal.
+                        onPressed: userManager.loading ? null : (){
+                          if(formKey.currentState.validate()){ // 4 - validando os campos
+                            userManager.signIn( //Agora podemos acessar o userManager diretamente.
+                                user: User(emailController.text, passController.text),
+                                onFail: (e){
+                                  scaffoldKey.currentState.showSnackBar(
+                                      SnackBar(
+                                        content:  Text('Falha ao entra:  $e'),
+                                        backgroundColor: Colors.red,
+                                      )
+                                  );
+                                },
+                                onSuccess: (){
+                                  //TODO: FECHAR TELA DE LOGIN
+                                }
+                            );
+                          }
+                        },
+                        color: Theme.of(context).primaryColor,
+                        disabledColor: Theme.of(context).primaryColor.withAlpha(100),
+                        textColor: Colors.white,
+                        child: userManager.loading ? const CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(Colors.white),
+                        ) :
+                        const Text(
+                          'Entrar',
+                          style: TextStyle(
+                              fontSize: 18
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
             ),
           ),
         ),
