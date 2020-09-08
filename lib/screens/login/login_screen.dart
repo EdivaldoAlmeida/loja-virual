@@ -94,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                         onPressed: userManager.loading ? null : (){
                           if(formKey.currentState.validate()){ // 4 - validando os campos
                             userManager.signIn( //Agora podemos acessar o userManager diretamente.
-                                user: User(emailController.text, passController.text),
+                                user: User(email: emailController.text, password: passController.text),
                                 onFail: (e){
                                   scaffoldKey.currentState.showSnackBar(
                                       SnackBar(
