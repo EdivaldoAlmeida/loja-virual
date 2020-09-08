@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider( //Possibilita o acesso à UserManeger de qualquer lugar
-    create: (_) => UserMaganager(),
+    create: (_) => UserManager(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Loja do Edivaldo',

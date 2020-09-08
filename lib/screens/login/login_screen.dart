@@ -41,7 +41,7 @@ class LoginScreen extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 16),
           child: Form( // 1 - Esse Widget é necessário para permmitir o acesso aos campos do formulário
             key: formKey, // 3 - Chave para acessar os formulários
-            child: Consumer<UserMaganager>( //widget consumidor é aquele que fica observando as mudanças no UserManager e rebuilda todos os filhos em caso de mudança daquele
+            child: Consumer<UserManager>( //widget consumidor é aquele que fica observando as mudanças no UserManager e rebuilda todos os filhos em caso de mudança daquele
               builder: (_, userManager, __){ //parâmetros com _ quer dizer que não iremos utilizá-los.
                 return ListView(
                   padding: const EdgeInsets.all(16),

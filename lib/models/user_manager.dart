@@ -8,10 +8,10 @@ import 'package:loja_virtual/models/user.dart';
 Classe controladora de usuários para autenticação, etc.
  */
 
-class UserMaganager extends ChangeNotifier {
+class UserManager extends ChangeNotifier {
 
   //Carregando o user logado ao iniciar a App
-  UserMaganager(){
+  UserManager(){
     _loadCurrentUser();
   }
 
@@ -43,6 +43,23 @@ class UserMaganager extends ChangeNotifier {
         onFail(getErrorString(e.code));
     }
     loading = false; //após carregar o login ou falha, loading será false;
+  }
+
+  //Salvando um novo usuário com e-mail e password
+  Future<void> signUp({User user, Function onFail, Function onSuccess }) async{
+    loading = true;
+
+    try {
+      final AuthResult result = await auth.createUserWithEmailAndPassword(
+          email: user.email, password: user.password);
+      this.user = result.user;
+
+      onSuccess();
+
+    }on PlatformException catch(e){
+      onFail(getErrorString(e.code));
+    }
+    loading = false;
   }
 
      set loading(bool value){
