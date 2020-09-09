@@ -52,7 +52,10 @@ class UserManager extends ChangeNotifier {
     try {
       final AuthResult result = await auth.createUserWithEmailAndPassword(
           email: user.email, password: user.password);
-      this.user = result.user;
+      //Recuperando o id do usuário salvo
+      user.id = result.user.uid;
+
+      await user.saveData();
 
       onSuccess();
 
@@ -67,7 +70,7 @@ class UserManager extends ChangeNotifier {
     notifyListeners(); //Informa para todos que estão escutando da mudança
   }
 
-  Future<void>   _loadCurrentUser() async{
+  Future<void>  _loadCurrentUser() async{
    final FirebaseUser currentUser = await auth.currentUser();
     if(currentUser != null){
         user = currentUser;
